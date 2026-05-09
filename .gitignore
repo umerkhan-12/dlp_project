@@ -1,0 +1,16 @@
+# Large datasets and images
+/data/aptos2019-blindness-detection.zip
+/data/raw/aptos2019-blindness-detection/train_images/
+/data/raw/aptos2019-blindness-detection/test_images/
+/data/archive/ODIR-5K/ODIR-5K/Training Images/
+/data/archive/ODIR-5K/ODIR-5K/Testing Images/
+/data/preprocessed_images/
+/data/processed/
+
+# Training artifacts
+/checkpoints/
+/experiments/
+/logs/
+/results/
+/models/
+*.pth
