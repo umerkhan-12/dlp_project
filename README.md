@@ -63,6 +63,15 @@ python main.py --model resnet50
 python main.py --model efficientnet_b4
 ```
 
+### Google Colab Full Training (Recommended for complete project training)
+
+Use the notebook below to train all models on full APTOS data (ViT, ResNet-50, EfficientNet-B4) with GPU:
+
+- **`Retinal_Disease_Classification_Full_Training_Colab_v2.ipynb`** ← Use this one (improved with Kaggle verification)
+
+Older version (issues with dataset download):
+- `Retinal_Disease_Classification_Full_Training_Colab.ipynb`
+
 ### Full Configuration
 
 ```bash
