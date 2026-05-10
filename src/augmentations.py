@@ -83,7 +83,6 @@ def get_train_transforms(
         ], p=0.2),
 
         A.OneOf([
-            A.GaussNoise(var_limit=(0.001, 0.003), p=1.0),
             A.GaussianBlur(blur_limit=3, p=1.0),
         ], p=0.2),
 

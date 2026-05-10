@@ -9,7 +9,10 @@ import time
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from torch.cuda.amp import GradScaler, autocast
+try:
+    from torch.amp import GradScaler, autocast
+except ImportError:
+    from torch.cuda.amp import GradScaler, autocast
 from torch.optim import AdamW, SGD
 from torch.optim.lr_scheduler import CosineAnnealingWarmRestarts, OneCycleLR, LambdaLR
 from typing import Dict, Optional, Tuple, Any, Callable
@@ -85,7 +88,10 @@ class Trainer:
             self.experiment_dir.mkdir(parents=True, exist_ok=True)
 
         # Mixed precision scaler
-        self.scaler = GradScaler() if mixed_precision and device.type == 'cuda' else None
+        try:
+            self.scaler = GradScaler('cuda') if mixed_precision and device.type == 'cuda' else None
+        except TypeError:
+            self.scaler = GradScaler() if mixed_precision and device.type == 'cuda' else None
 
         # Training history
         self.history = {
@@ -133,7 +139,7 @@ class Trainer:
             self.optimizer.zero_grad()
 
             if self.mixed_precision and self.scaler:
-                with autocast():
+                with autocast('cuda'):
                     outputs = self.model(images)
                     if use_mixup:
                         loss = lam * self.criterion(outputs, labels_a) + \
@@ -214,7 +220,7 @@ class Trainer:
             batch_size = images.size(0)
 
             if self.mixed_precision and self.device.type == 'cuda':
-                with autocast():
+                with autocast('cuda'):
                     outputs = self.model(images)
                     loss = self.criterion(outputs, labels)
             else:
