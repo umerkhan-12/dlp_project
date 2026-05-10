@@ -42,7 +42,8 @@ def get_train_transforms(
     return A.Compose([
         # Resize and crop
         A.RandomResizedCrop(
-            size=(image_size, image_size),
+            height=image_size,
+            width=image_size,
             scale=scale_range,
             ratio=(0.9, 1.1),
             p=1.0
@@ -82,8 +83,8 @@ def get_train_transforms(
         ], p=0.2),
 
         A.OneOf([
-            A.GaussNoise(std_range=(0.01, 0.03), p=1.0),
-            A.ISONoise(color_shift=(0.01, 0.03), intensity=(0.1, 0.3), p=1.0),
+            A.GaussNoise(var_limit=(0.001, 0.003), p=1.0),
+            A.GaussianBlur(blur_limit=3, p=1.0),
         ], p=0.2),
 
         # CLAHE for contrast enhancement (common in medical imaging)
@@ -112,7 +113,7 @@ def get_val_transforms(
         Albumentations composition of transforms
     """
     return A.Compose([
-        A.Resize(image_size, image_size),
+        A.Resize(height=image_size, width=image_size),
         A.Normalize(mean=mean, std=std),
         ToTensorV2(),
     ])
@@ -136,7 +137,7 @@ def get_tta_transforms(
         List of transform pipelines for TTA
     """
     base_transforms = [
-        A.Resize(image_size, image_size),
+        A.Resize(height=image_size, width=image_size),
         A.Normalize(mean=mean, std=std),
         ToTensorV2(),
     ]
@@ -147,7 +148,7 @@ def get_tta_transforms(
 
         # Horizontal flip
         A.Compose([
-            A.Resize(image_size, image_size),
+            A.Resize(height=image_size, width=image_size),
             A.HorizontalFlip(p=1.0),
             A.Normalize(mean=mean, std=std),
             ToTensorV2(),
@@ -155,7 +156,7 @@ def get_tta_transforms(
 
         # Vertical flip
         A.Compose([
-            A.Resize(image_size, image_size),
+            A.Resize(height=image_size, width=image_size),
             A.VerticalFlip(p=1.0),
             A.Normalize(mean=mean, std=std),
             ToTensorV2(),
@@ -163,7 +164,7 @@ def get_tta_transforms(
 
         # Rotate 90
         A.Compose([
-            A.Resize(image_size, image_size),
+            A.Resize(height=image_size, width=image_size),
             A.Rotate(limit=(90, 90), p=1.0),
             A.Normalize(mean=mean, std=std),
             ToTensorV2(),
@@ -171,7 +172,7 @@ def get_tta_transforms(
 
         # Rotate -90
         A.Compose([
-            A.Resize(image_size, image_size),
+            A.Resize(height=image_size, width=image_size),
             A.Rotate(limit=(-90, -90), p=1.0),
             A.Normalize(mean=mean, std=std),
             ToTensorV2(),

@@ -46,14 +46,14 @@ print("=" * 60)
 
 # Simple transforms
 train_transform = A.Compose([
-    A.Resize(config.image_size, config.image_size),
+    A.Resize(height=config.image_size, width=config.image_size),
     A.HorizontalFlip(p=0.5),
     A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ToTensorV2(),
 ])
 
 val_transform = A.Compose([
-    A.Resize(config.image_size, config.image_size),
+    A.Resize(height=config.image_size, width=config.image_size),
     A.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ToTensorV2(),
 ])
